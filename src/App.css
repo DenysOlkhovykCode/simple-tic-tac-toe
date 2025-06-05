@@ -1,38 +1,236 @@
-.App {
-  text-align: center;
+:root {
+  --player-bg: #1e1e2f;
+  --player-border: #4a4a6a;
+  --player-text: #ffffff;
+  --player-win: #00ff88;
+  --highlight-color: #ff4081;
+  --bg-color: #1e1e2f;
+  --cell-border: #4a4a6a;
+  --cell-bg: #2a2a3d;
+  --cell-hover: #3d3d55;
+  --text-color: #ffffff;
+  --symbol-color: #00ff88;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.appWrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+.playersInfoWrapper {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--player-bg);
+  border: 2px solid var(--player-border);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  width: fit-content;
+}
+
+.playersInfo {
+  position: relative;
+  top: 1rem;
+  left: 52%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--player-bg);
+  padding: 1rem 2rem;
+  gap: 2rem;
+  width: fit-content;
+  z-index: 10;
+}
+
+.playerCard {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--player-bg);
+  border: 2px solid var(--player-border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  color: var(--player-text);
+  font-family: sans-serif;
+  text-align: center;
+  min-width: 150px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease-in-out;
+}
+
+.currentPlayer {
+  border-color: var(--highlight-color); /* наприклад, яскравий колір */
+  box-shadow: 0 0 15px 3px var(--highlight-color);
+  background-color: var(--highlight-bg);
+  transform: scale(1.1);
+}
+
+.playerCard:hover {
+  transform: scale(1.05);
+}
+
+.playerWins {
+  color: var(--player-win);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.gamesCount {
+  margin-top: 2rem;
+  color: var(--player-text);
+  font-family: sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.gameBoard {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.gameBoard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  gap: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cell {
+  width: 80px;
+  height: 80px;
+}
+
+.cell button {
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
+  background-color: var(--cell-bg);
+  border: 2px solid var(--cell-border);
+  border-radius: 10px;
+  color: var(--symbol-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cell button:hover {
+  background-color: var(--cell-hover);
+}
+
+.controls {
+  margin-top: -15vh;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  background-color: var(--player-bg);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--player-border);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.boardSizeSelector,
+.newGameButton {
+  padding: 0.5rem 1rem;
+  background-color: var(--cell-bg);
+  border: 2px solid var(--cell-border);
+  border-radius: 8px;
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.boardSizeSelector:hover,
+.newGameButton:hover {
+  background-color: var(--cell-hover);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* трохи темніше */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--player-bg);
+  color: var(--text-color);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--player-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  min-width: 300px;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.close-button {
+  margin-top: 1rem;
+  background-color: var(--cell-bg);
+  color: var(--text-color);
+  border: 2px solid var(--cell-border);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: var(--cell-hover);
 }
