@@ -36,7 +36,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
           <div className="modal">
             {winner >= 0 && (
               <p>
-                Player {winner + 1} win {players[winner].time}
+                Player {winner + 1} win in {players[winner].time} seconds
               </p>
             )}
             {winner === -1 && <p>It's a draw. Try again</p>}
