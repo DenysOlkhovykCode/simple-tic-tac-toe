@@ -58,12 +58,13 @@ const boardSlice = createSlice({
       action: PayloadAction<{ row: number; col: number; symbol: Symbol }>
     ) {
       const { row, col, symbol } = action.payload;
+      if (state.board[row][col] === Symbol.nothing) {
+        state.board[row][col] = symbol;
+        state.numberOfTurns += 1;
 
-      state.board[row][col] = symbol;
-      state.numberOfTurns += 1;
-
-      if (isWinningMove(state.board, row, col, symbol)) {
-        state.winner = symbol;
+        if (isWinningMove(state.board, row, col, symbol)) {
+          state.winner = symbol;
+        }
       }
     },
 

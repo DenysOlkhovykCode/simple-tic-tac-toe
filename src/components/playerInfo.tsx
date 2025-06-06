@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Symbol } from "../types";
 import { addPlayer, updatePlayerTime } from "../store/playersSlice";
-import { getInfoAboutPlayers, getCurrentPlayer } from "../store/selectors";
+import { getInfoAboutPlayers, getCurrentPlayerID } from "../store/selectors";
 
 const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
@@ -14,7 +14,7 @@ const formatTime = (seconds: number): string => {
 const PlayersInfo = () => {
   const dispatch = useDispatch();
   const players = useSelector(getInfoAboutPlayers);
-  const currentPlayer = useSelector(getCurrentPlayer);
+  const currentPlayerId = useSelector(getCurrentPlayerID);
 
   useEffect(() => {
     if (players.players.length === 0) {
@@ -26,16 +26,12 @@ const PlayersInfo = () => {
   useEffect(() => {
     if (players.players.length === 0) return;
 
-    const currentPlayerId = players.players.findIndex(
-      (p) => p.symbol === currentPlayer
-    );
-
     const interval = setInterval(() => {
       dispatch(updatePlayerTime({ id: currentPlayerId, time: 1 }));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [currentPlayer, dispatch, players.players]);
+  }, [currentPlayerId, dispatch, players.players]);
 
   return (
     <div className="playersInfoWrapper">
@@ -44,7 +40,9 @@ const PlayersInfo = () => {
           <div
             key={index}
             className={`playerCard ${
-              currentPlayer === player.symbol ? "currentPlayer" : ""
+              players.players[currentPlayerId].symbol === player.symbol
+                ? "currentPlayer"
+                : ""
             }`}
           >
             {formatTime(player.time || 0)} <br />

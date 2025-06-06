@@ -1,15 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { turn } from "../store/boardSlice";
-import {
-  playerWins,
-  increaseCountOfGames,
-  updatePlayerTime,
-} from "../store/playersSlice";
+import { playerWins, increaseCountOfGames } from "../store/playersSlice";
 import {
   getBoard,
-  getCurrentPlayer,
+  getCurrentPlayerID,
   getInfoAboutPlayers,
 } from "../store/selectors";
 import { Symbol, ModalProps } from "../types";
@@ -17,20 +13,13 @@ import { Symbol, ModalProps } from "../types";
 const GameBoard = ({ setIsOpenModal }: ModalProps) => {
   const dispatch = useDispatch();
   const board = useSelector(getBoard);
-  const currentPlayer = useSelector(getCurrentPlayer);
+  const currentPlayerId = useSelector(getCurrentPlayerID);
   const players = useSelector(getInfoAboutPlayers);
-  const [endOfLastTime, setEndOfLastTime] = useState<number>(Date.now());
 
   const Turn = (row: number, col: number) => {
-    dispatch(turn({ row, col, symbol: currentPlayer }));
-
-    players.players.forEach((player, index) => {
-      if (player.symbol === currentPlayer) {
-        const time = Math.floor((Date.now() - endOfLastTime) / 1000);
-        dispatch(updatePlayerTime({ id: index, time }));
-        setEndOfLastTime(Date.now());
-      }
-    });
+    dispatch(
+      turn({ row, col, symbol: players.players[currentPlayerId].symbol })
+    );
   };
 
   useEffect(() => {
@@ -63,12 +52,17 @@ const GameBoard = ({ setIsOpenModal }: ModalProps) => {
   }, [board.board, dispatch, setIsOpenModal]);
 
   return (
-    <div className="gameBoard">
+    <div data-testid="board" className="gameBoard">
       {board.board.map((row, rowIndex) => (
         <div key={rowIndex} className="row">
           {row.map((cell, colIndex) => (
             <div key={colIndex} className="cell">
-              <button onClick={() => Turn(rowIndex, colIndex)}>{cell}</button>
+              <button
+                data-testid="cell"
+                onClick={() => Turn(rowIndex, colIndex)}
+              >
+                {cell}
+              </button>
             </div>
           ))}
         </div>

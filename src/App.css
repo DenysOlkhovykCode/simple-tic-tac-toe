@@ -81,7 +81,7 @@ html {
 }
 
 .currentPlayer {
-  border-color: var(--highlight-color); /* наприклад, яскравий колір */
+  border-color: var(--highlight-color);
   box-shadow: 0 0 15px 3px var(--highlight-color);
   background-color: var(--highlight-bg);
   transform: scale(1.1);
@@ -200,7 +200,7 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6); /* трохи темніше */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;

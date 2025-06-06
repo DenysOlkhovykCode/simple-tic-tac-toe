@@ -7,6 +7,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   let winner = -1;
   const winnerSymbol = useSelector(getBoard).winner;
   const players = useSelector(getInfoAboutPlayers).players;
+  let timer = 0;
 
   players.forEach((player, index) => {
     if (player.symbol === winnerSymbol) {
@@ -29,6 +30,13 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
     }
   };
 
+  // If there is no winner and the game is over, calculate the total time
+  if (winner === -1 && players.length > 0 && timer === 0) {
+    players.forEach((player) => {
+      timer += player.time;
+    });
+  }
+
   return (
     <>
       {isOpenModal && (
@@ -36,10 +44,12 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
           <div className="modal">
             {winner >= 0 && (
               <p>
-                Player {winner + 1} win in {players[winner].time} seconds
+                Player {winner + 1} win. Time: {players[winner].time} seconds
               </p>
             )}
-            {winner === -1 && <p>It's a draw. Try again</p>}
+            {winner === -1 && (
+              <p>It's a draw. Try again. Time: {timer} seconds</p>
+            )}
             <button className="close-button" onClick={closeModal}>
               ОК
             </button>
