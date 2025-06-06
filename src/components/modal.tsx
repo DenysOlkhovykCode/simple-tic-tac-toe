@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { ModalProps } from "../types";
 import { useSelector } from "react-redux";
 
@@ -7,7 +9,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   let winner = -1;
   const winnerSymbol = useSelector(getBoard).winner;
   const players = useSelector(getInfoAboutPlayers).players;
-  let timer = 0;
+  const [timer, setTimer] = useState(0);
 
   players.forEach((player, index) => {
     if (player.symbol === winnerSymbol) {
@@ -16,6 +18,7 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   });
 
   const closeModal = () => {
+    if (!setIsOpenModal) return;
     setIsOpenModal(false);
   };
 
@@ -31,10 +34,12 @@ const Modal = ({ isOpenModal, setIsOpenModal }: ModalProps) => {
   };
 
   // If there is no winner and the game is over, calculate the total time
-  if (winner === -1 && players.length > 0 && timer === 0) {
+  if (winner === -1 && players.length > 0 && timer === 0 && isOpenModal) {
+    let time = 0;
     players.forEach((player) => {
-      timer += player.time;
+      time += player.time;
     });
+    setTimer(time);
   }
 
   return (

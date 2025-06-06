@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Symbol } from "../types";
+import { Symbol, ModalProps } from "../types";
 import { addPlayer, updatePlayerTime } from "../store/playersSlice";
 import { getInfoAboutPlayers, getCurrentPlayerID } from "../store/selectors";
 
@@ -11,7 +11,7 @@ const formatTime = (seconds: number): string => {
   return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 };
 
-const PlayersInfo = () => {
+const PlayersInfo = ({ isOpenModal }: ModalProps) => {
   const dispatch = useDispatch();
   const players = useSelector(getInfoAboutPlayers);
   const currentPlayerId = useSelector(getCurrentPlayerID);
@@ -24,14 +24,14 @@ const PlayersInfo = () => {
   }, [players.players.length, dispatch]);
 
   useEffect(() => {
-    if (players.players.length === 0) return;
+    if (players.players.length === 0 || isOpenModal) return;
 
     const interval = setInterval(() => {
       dispatch(updatePlayerTime({ id: currentPlayerId, time: 1 }));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [currentPlayerId, dispatch, players.players]);
+  }, [currentPlayerId, dispatch, players.players, isOpenModal]);
 
   return (
     <div className="playersInfoWrapper">

@@ -27,6 +27,7 @@ const GameBoard = ({ setIsOpenModal }: ModalProps) => {
       dispatch(playerWins({ symbol: board.winner }));
       dispatch(increaseCountOfGames());
       setTimeout(() => {
+        if (!setIsOpenModal) return;
         setIsOpenModal(true);
       }, 2000);
     }
@@ -46,6 +47,7 @@ const GameBoard = ({ setIsOpenModal }: ModalProps) => {
     if (count === 0) {
       dispatch(increaseCountOfGames());
       setTimeout(() => {
+        if (!setIsOpenModal) return;
         setIsOpenModal(true);
       }, 2000);
     }

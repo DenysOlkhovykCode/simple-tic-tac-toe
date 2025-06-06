@@ -24,5 +24,5 @@ export interface boardState {
 
 export type ModalProps = {
   isOpenModal?: boolean;
-  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
 };

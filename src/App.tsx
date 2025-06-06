@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="App">
-      <PlayersInfo />
+      <PlayersInfo isOpenModal={isOpenModal} />
       <GameBoard setIsOpenModal={setIsOpenModal} />
       <Controls />
       <Modal isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
